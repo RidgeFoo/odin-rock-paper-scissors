@@ -3,11 +3,10 @@ function computerPlay() {
   return gameChoices[Math.floor(Math.random() * gameChoices.length)];
 }
 
-// This function should be broken up
-function playRound(playerSelection, computerSelection) {
-  let playerVictory = false;
-  playerSelectionNormalised = playerSelection.toUpperCase();
-  computerSelectionNormalised = computerSelection.toUpperCase();
+function getPlayerWin(playerSelection, computerSelection) {
+  let isPlayerWin = false;
+  const playerSelectionNormalised = playerSelection.toUpperCase();
+  const computerSelectionNormalised = computerSelection.toUpperCase();
 
   playerVictoryConditions = {
     ROCK: "SCISSORS",
@@ -15,65 +14,92 @@ function playRound(playerSelection, computerSelection) {
     SCISSORS: "PAPER",
   };
 
-  if (playerSelectionNormalised == computerSelectionNormalised) {
-    return `It is a draw! ${playerSelection} and ${computerSelection} are equal`;
-  }
-
   if (
     playerVictoryConditions[playerSelectionNormalised] ===
     computerSelectionNormalised
   ) {
-    playerVictory = true;
+    isPlayerWin = true;
   }
 
-  if (playerVictory) {
+  return isPlayerWin;
+}
+
+function getRoundMessage(
+  isPlayerWin,
+  playerSelection,
+  computerSelection,
+  isDraw = false
+) {
+  if (isPlayerWin) {
     return `You win! ${playerSelection} beats ${computerSelection}`;
+  } else if (isDraw) {
+    return `It is a draw! ${playerSelection} and ${computerSelection} are equal`;
+  }
+  return `You lose! ${computerSelection} beats ${playerSelection}`;
+}
+
+function playRound(playerSelection, computerSelection) {
+  let isDraw = false;
+  let isPlayerWin = false;
+
+  // Handle draw
+  if (playerSelection.toUpperCase() === computerSelection.toUpperCase()) {
+    isDraw = true;
+  } else {
+    isPlayerWin = getPlayerWin(playerSelection, computerSelection);
   }
 
-  return `You lose! ${computerSelection} beats ${playerSelection}`;
+  console.log(
+    getRoundMessage(isPlayerWin, playerSelection, computerSelection, isDraw)
+  );
+
+  return { isPlayerWin: isPlayerWin, isDraw: isDraw };
 }
 
 function game() {
   const maxRounds = 5;
   let tries = 0;
-  let playerWins = 0;
-  let computerWins = 0;
+  let playerWinCount = 0;
+  let computerWinCount = 0;
+  let keepGoing = true;
 
-  while (true) {
+  while (keepGoing) {
     tries++;
     // Prompt user and get computer's random choice
-    result = playRound(
+    roundResult = playRound(
       prompt("Choose Rock, Paper or Scissors: "),
       computerPlay()
     );
 
     // For each round return who the winner is and increment the relevant win counter
-    // This is a rubbish way of doing this but it works
-    console.log(result);
-
-    if (result.startsWith("You win!")) {
-      playerWins++;
-    } else if (result.startsWith("You lose!")) {
-      computerWins++;
+    // Must handle draws
+    if (roundResult["isPlayerWin"]) {
+      playerWinCount++;
+    } else if (!roundResult["isPlayerWin"] && !roundResult["isDraw"]) {
+      computerWinCount++;
     }
     // Stop at 5 games
     if (tries >= maxRounds) {
-      break;
+      keepGoing = false;
     }
   }
 
   // Calculate the overall winner and return message
-  if (playerWins > computerWins) {
+  returnWinner(playerWinCount, computerWinCount);
+}
+
+function returnWinner(playerWinCount, computerWinCount) {
+  if (playerWinCount > computerWinCount) {
     console.log(
-      `You are the winner! Player: ${playerWins} Computer: ${computerWins}`
+      `You are the winner! Player: ${playerWinCount} Computer: ${computerWinCount}`
     );
-  } else if (playerWins === computerWins) {
+  } else if (playerWinCount === computerWinCount) {
     console.log(
-      `It is a draw. No one wins! Computer: ${computerWins} Player: ${playerWins}`
+      `It is a draw. No one wins! Computer: ${computerWinCount} Player: ${playerWinCount}`
     );
   } else {
     console.log(
-      `The computer is the winner! Computer: ${computerWins} Player: ${playerWins}`
+      `The computer is the winner! Computer: ${computerWinCount} Player: ${playerWinCount}`
     );
   }
 }
