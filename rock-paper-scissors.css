@@ -1,13 +1,12 @@
 body {
   font-family: "Roboto", "sans-serif";
   margin: 0px;
-  background: #e5e7eb;
+  background: #e5e7ebbf;
 }
 
 .container {
   display: flex;
   width: 800px;
-  height: 125px;
   margin: auto;
 }
 
@@ -15,12 +14,14 @@ body {
   align-items: center;
   justify-content: center;
   gap: 18px;
+  height: 125px;
 }
 
 .result {
-  font-size: 16px;
+  font-size: 22px;
+  height: 24px;
   text-align: center;
-  height: 16px;
+  font-weight: 300;
 }
 
 .title {
@@ -31,8 +32,9 @@ body {
 }
 
 .scores {
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
+  font-size: 48px;
 }
 
 .scorecard {
@@ -41,18 +43,12 @@ body {
   text-align: center;
 }
 
-.score-title {
-  font-size: 28px;
-  font-weight: 700;
-}
-
 .score {
-  height: 75%;
-  font-size: 28px;
-  font-weight: 300;
+  font-weight: 700;
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100px;
 }
 
 button {

@@ -71,8 +71,13 @@ function playRound(playerChoice) {
 }
 
 function updateGame(roundResult) {
+  // Allow the game to rollback over if user makes another choice beyond round 5
+  if (roundsPlayed === maxRounds) {
+    roundsPlayed = 0;
+    playerScore = 0;
+    computerScore = 0;
+  }
   addResultToPage(roundResult.roundMessage);
-  // For each round return who the winner is and increment the relevant win counter
   // Must handle draws
   roundsPlayed++;
   if (roundResult["isPlayerWin"]) {
@@ -90,11 +95,11 @@ function updateGame(roundResult) {
 function getWinner() {
   let message;
   if (playerScore > computerScore) {
-    message = `You are the winner!`;
+    message = `You are the winner! 🎉`;
   } else if (playerScore === computerScore) {
-    message = `It is a draw. No one wins!`;
+    message = `It is a draw. No one wins! 🤨`;
   } else {
-    message = `The computer is the winner!`;
+    message = `The computer is the winner! 😢`;
   }
   return message;
 }
