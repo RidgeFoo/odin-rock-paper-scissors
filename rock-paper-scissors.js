@@ -1,4 +1,10 @@
-function computerPlay() {
+// Using global variables to track the game which probably is not best practice!
+let roundsPlayed = 0;
+let playerScore = 0;
+let computerScore = 0;
+const maxRounds = 5;
+
+function getComputerChoice() {
   const gameChoices = ["Rock", "Paper", "Scissors"];
   return gameChoices[Math.floor(Math.random() * gameChoices.length)];
 }
@@ -31,75 +37,83 @@ function getRoundMessage(
   isDraw = false
 ) {
   if (isPlayerWin) {
-    return `You win! ${playerSelection} beats ${computerSelection}`;
+    return `You win! ${playerSelection} beats ${computerSelection}.`;
   } else if (isDraw) {
-    return `It is a draw! ${playerSelection} and ${computerSelection} are equal`;
+    return `It is a draw! You both played ${playerSelection}!`;
   }
-  return `You lose! ${computerSelection} beats ${playerSelection}`;
+  return `You lose! ${computerSelection} beats ${playerSelection}.`;
 }
 
-function playRound(playerSelection, computerSelection) {
+function playRound(playerChoice) {
   let isDraw = false;
   let isPlayerWin = false;
+  const computerChoice = getComputerChoice();
 
   // Handle draw
-  if (playerSelection.toUpperCase() === computerSelection.toUpperCase()) {
+  if (playerChoice.toUpperCase() === computerChoice.toUpperCase()) {
     isDraw = true;
   } else {
-    isPlayerWin = getPlayerWin(playerSelection, computerSelection);
+    isPlayerWin = getPlayerWin(playerChoice, computerChoice);
   }
 
-  console.log(
-    getRoundMessage(isPlayerWin, playerSelection, computerSelection, isDraw)
+  roundMessage = getRoundMessage(
+    isPlayerWin,
+    playerChoice,
+    computerChoice,
+    isDraw
   );
 
-  return { isPlayerWin: isPlayerWin, isDraw: isDraw };
+  updateGame({
+    isPlayerWin: isPlayerWin,
+    isDraw: isDraw,
+    roundMessage: roundMessage,
+  });
 }
 
-function game() {
-  const maxRounds = 5;
-  let tries = 0;
-  let playerWinCount = 0;
-  let computerWinCount = 0;
-  let keepGoing = true;
-
-  while (keepGoing) {
-    tries++;
-    // Prompt user and get computer's random choice
-    roundResult = playRound(
-      prompt("Choose Rock, Paper or Scissors: "),
-      computerPlay()
-    );
-
-    // For each round return who the winner is and increment the relevant win counter
-    // Must handle draws
-    if (roundResult["isPlayerWin"]) {
-      playerWinCount++;
-    } else if (!roundResult["isPlayerWin"] && !roundResult["isDraw"]) {
-      computerWinCount++;
-    }
-    // Stop at 5 games
-    if (tries >= maxRounds) {
-      keepGoing = false;
-    }
+function updateGame(roundResult) {
+  addResultToPage(roundResult.roundMessage);
+  // For each round return who the winner is and increment the relevant win counter
+  // Must handle draws
+  roundsPlayed++;
+  if (roundResult["isPlayerWin"]) {
+    playerScore++;
+  } else if (!roundResult["isPlayerWin"] && !roundResult["isDraw"]) {
+    computerScore++;
   }
+  updateScoresAndRounds();
 
-  // Calculate the overall winner and return message
-  returnWinner(playerWinCount, computerWinCount);
+  if (roundsPlayed === maxRounds) {
+    addResultToPage(getWinner());
+  }
 }
 
-function returnWinner(playerWinCount, computerWinCount) {
-  if (playerWinCount > computerWinCount) {
-    console.log(
-      `You are the winner! Player: ${playerWinCount} Computer: ${computerWinCount}`
-    );
-  } else if (playerWinCount === computerWinCount) {
-    console.log(
-      `It is a draw. No one wins! Computer: ${computerWinCount} Player: ${playerWinCount}`
-    );
+function getWinner() {
+  let message;
+  if (playerScore > computerScore) {
+    message = `You are the winner!`;
+  } else if (playerScore === computerScore) {
+    message = `It is a draw. No one wins!`;
   } else {
-    console.log(
-      `The computer is the winner! Computer: ${computerWinCount} Player: ${playerWinCount}`
-    );
+    message = `The computer is the winner!`;
   }
+  return message;
+}
+
+// React to events and make changes to the DOM
+const buttons = document.querySelectorAll("button");
+
+buttons.forEach((button) => {
+  button.addEventListener("click", () => playRound(button.id));
+});
+
+function addResultToPage(result) {
+  document.querySelector(".result").textContent = result;
+}
+
+function updateScoresAndRounds() {
+  document.querySelector(
+    ".score-title"
+  ).textContent = `Scores after ${roundsPlayed} rounds`;
+  document.querySelector(".player").textContent = playerScore;
+  document.querySelector(".computer").textContent = computerScore;
 }

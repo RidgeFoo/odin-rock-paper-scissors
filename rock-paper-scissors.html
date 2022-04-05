@@ -1,13 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <script src="rock-paper-scissors.js"></script>
-</head>
-<body>
-    
-</body>
+    <script src="rock-paper-scissors.js" defer></script>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:100,300,700,900"
+    />
+    <link rel="stylesheet" href="rock-paper-scissors.css" />
+  </head>
+  <body>
+    <div class="title">Rock, Paper or Scissors?</div>
+    <div class="container choices">
+      <button id="Rock">🪨</button>
+      <button id="Paper">📃</button>
+      <button id="Scissors">✂️</button>
+    </div>
+    <div class="result"></div>
+    <div class="title score-title">Scores after 0 rounds</div>
+    <div class="container scores">
+      <div class="scorecard">
+        <div class="score-title">👨🏻</div>
+        <div class="score player">0</div>
+      </div>
+
+      <div class="scorecard">
+        <div class="score-title">🤖</div>
+        <div class="score computer">0</div>
+      </div>
+    </div>
+  </body>
 </html>

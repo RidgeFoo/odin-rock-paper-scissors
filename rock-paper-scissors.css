@@ -1,0 +1,66 @@
+body {
+  font-family: "Roboto", "sans-serif";
+  margin: 0px;
+  background: #e5e7eb;
+}
+
+.container {
+  display: flex;
+  width: 800px;
+  height: 125px;
+  margin: auto;
+}
+
+.choices {
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.result {
+  font-size: 16px;
+  text-align: center;
+  height: 16px;
+}
+
+.title {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 900;
+  padding: 24px 0px 24px 0px;
+}
+
+.scores {
+  justify-content: space-around;
+  align-items: center;
+}
+
+.scorecard {
+  width: 200px;
+  height: 100%;
+  text-align: center;
+}
+
+.score-title {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.score {
+  height: 75%;
+  font-size: 28px;
+  font-weight: 300;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  padding: 8px 24px;
+  border-radius: 8px;
+  border-color: royalblue;
+  color: white;
+  font-size: 38px;
+  background-color: royalblue;
+  width: 140px;
+}
